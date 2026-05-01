@@ -1,0 +1,10 @@
+# macOS / Python junk
+.DS_Store
+__pycache__/
+*.pyc
+
+# Skills authored by others (kept locally, not redistributed here)
+brutal-reviewer/
+hallucination-detector/
+humanizer/
+paper-proofreading/
