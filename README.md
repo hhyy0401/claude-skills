@@ -12,7 +12,7 @@ A literature-survey workflow that finds, verifies, and synthesizes real papers o
 - Applies a citation filter: a paper must have **≥ 50 citations** OR be **published within the last 12 months** (foundational papers are exempt).
 - Verifies every paper twice — existence (HF or arxiv search) and full metadata (authors, exact title, venue, year) — before citing.
 - Classifies findings into 4–8 technique families and writes an in-chat summary with key insights and open questions.
-- Saves a `roadmap.md` whose paper table follows the exact column schema (`제목 / 저자 / 저널/학회 / 비고`) consumed by `pdf_crawl`, so the next step is a single command away.
+- Saves a `roadmap.md` whose paper table follows the column schema consumed by `pdf_crawl`, so the next step is a single command away.
 - Optional report mode: full LaTeX + compiled PDF survey with per-family sections, equation/algorithm boxes, and a clickable bibliography.
 - Final output goes through a hallucination-detection pass before being shown to the user.
 
@@ -22,7 +22,7 @@ Trigger phrases: *"survey X"*, *"find papers on X"*, *"what's the related work f
 
 A small crawler that downloads PDFs for every paper in a markdown literature roadmap. Designed as the natural follow-up to `paper-survey`, but works on any markdown file that uses the same table schema.
 
-- Parses markdown tables with the columns `제목 / 저자 / 저널/학회 / 비고`. Tables without these headers are ignored, so you can mix curated tables with notes/legends in the same file.
+- Parses markdown tables with four columns (title, authors, venue, notes); tables without those headers are ignored, so you can mix curated tables with notes/legends in the same file.
 - For each paper, walks a resolution chain until a real PDF lands: **Crossref** (multi-strategy DOI lookup) → **arXiv** (title + author search with token-overlap scoring) → **eLife API** for `10.7554/eLife.*` DOIs → **bioRxiv** for `10.1101/*` DOIs → **publisher landing page** (parses the `citation_pdf_url` meta tag with a browser-like UA + cookie jar) → **Semantic Scholar** Graph API → **Sci-Hub** mirror chain as a last-resort fallback.
 - Crossref matching combines **strict** (auto-accept) and **fuzzy** (accept-with-warning) modes scored on title overlap, year proximity, and first-author surname.
 - Output filenames follow `{firstauthorlastname}_{firsttitleword}_{year}.pdf` and are saved into a `pdf/` folder next to the markdown. Re-running is idempotent — files already on disk are skipped.
